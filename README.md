@@ -1,3 +1,24 @@
+# Frontend_EPS
+
+Frontend para el proyecto Sistema de Emprendedores (Next.js + Tailwind).
+
+Rápidos pasos para desarrollo:
+
+- Instalar dependencias:
+
+```bash
+npm install
+```
+
+- Ejecutar en modo desarrollo:
+
+```bash
+npm run dev
+```
+
+- Notas:
+  - Variables de entorno se almacenan en archivos `.env*` (no subir al repo).
+  - Si tienes binarios grandes, evita incluirlos en el repo; usa `.gitignore` o `git-lfs`.
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
