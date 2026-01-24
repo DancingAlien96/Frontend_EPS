@@ -39,3 +39,4 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+assets/VSCodeUserSetup-x64-1.108.2.exe
