@@ -124,6 +124,7 @@ export default function EmprendedoresPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isMobile, setIsMobile] = useState(false);
   const [formData, setFormData] = useState({
+    tipo_persona: 'individual',
     nombre_completo: '',
     dpi: '',
     fecha_nacimiento: '',
@@ -1048,22 +1049,30 @@ export default function EmprendedoresPage() {
               </button>
             </div>
             <form onSubmit={handleSubmit} className="p-4 sm:p-6">
+              <div className="lg:col-span-2 mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Tipo de registro</label>
+                <select name="tipo_persona" value={formData.tipo_persona} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-official-blue">
+                  <option value="individual">Emprendedor individual</option>
+                  <option value="organizacion">Organización</option>
+                  <option value="entidad">Entidad pública</option>
+                </select>
+              </div>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
                 <div className="lg:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-2">Nombre Completo *</label>
-                  <input type="text" name="nombre_completo" value={formData.nombre_completo} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-official-blue" />
+                  <input type="text" name="nombre_completo" value={formData.nombre_completo} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-official-blue" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">DPI *</label>
-                  <input type="text" name="dpi" value={formData.dpi} onChange={handleInputChange} required maxLength={13} placeholder="0000000000000" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-official-blue" />
+                  <input type="text" name="dpi" value={formData.dpi} onChange={handleInputChange} maxLength={13} placeholder="0000000000000" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-official-blue" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Fecha de Nacimiento *</label>
-                  <input type="date" name="fecha_nacimiento" value={formData.fecha_nacimiento} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-official-blue" />
+                  <input type="date" name="fecha_nacimiento" value={formData.fecha_nacimiento} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-official-blue" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Genero *</label>
-                  <select name="genero" value={formData.genero} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-official-blue">
+                  <select name="genero" value={formData.genero} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-official-blue">
                     <option value="masculino">Masculino</option>
                     <option value="femenino">Femenino</option>
                     <option value="otro">Otro</option>
@@ -1071,7 +1080,7 @@ export default function EmprendedoresPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Telefono *</label>
-                  <input type="tel" name="telefono" value={formData.telefono} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-official-blue" />
+                  <input type="tel" name="telefono" value={formData.telefono} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-official-blue" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Telefono Secundario</label>
@@ -1083,7 +1092,7 @@ export default function EmprendedoresPage() {
                 </div>
                 <div className="lg:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-2">Direccion Detallada *</label>
-                  <input type="text" name="direccion_detallada" value={formData.direccion_detallada} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-official-blue" />
+                  <input type="text" name="direccion_detallada" value={formData.direccion_detallada} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-official-blue" />
                 </div>
                 <div>
                   <CloudinaryUpload
@@ -1103,7 +1112,6 @@ export default function EmprendedoresPage() {
                     name="id_departamento_emprendimiento"
                     value={formData.id_departamento_emprendimiento}
                     onChange={handleInputChange}
-                    required
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-official-blue"
                   >
                     <option value="">Seleccione un departamento</option>
@@ -1118,7 +1126,6 @@ export default function EmprendedoresPage() {
                     name="id_municipio"
                     value={formData.id_municipio}
                     onChange={handleInputChange}
-                    required
                     disabled={!formData.id_departamento_emprendimiento}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-official-blue disabled:bg-gray-100 disabled:text-gray-500"
                   >
@@ -1128,7 +1135,7 @@ export default function EmprendedoresPage() {
                 </div>
                 <div className="lg:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-2">Nombre del Emprendimiento *</label>
-                  <input type="text" name="nombre_emprendimiento" value={formData.nombre_emprendimiento} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-official-blue" />
+                  <input type="text" name="nombre_emprendimiento" value={formData.nombre_emprendimiento} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-official-blue" />
                 </div>
                 <div className="lg:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-2">Descripción del Negocio *</label>
@@ -1137,13 +1144,12 @@ export default function EmprendedoresPage() {
                     value={formData.descripcion_emprendimiento}
                     onChange={handleInputChange}
                     rows={3}
-                    required
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-official-blue"
                   ></textarea>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Sector *</label>
-                  <select name="id_sector" value={formData.id_sector} onChange={handleInputChange} required className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-official-blue">
+                  <select name="id_sector" value={formData.id_sector} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-official-blue">
                     <option value="">Seleccione un sector</option>
                     {sectores.map((sector) => (
                       <option key={sector.id_sector} value={sector.id_sector}>{sector.nombre_sector}</option>
@@ -1156,7 +1162,6 @@ export default function EmprendedoresPage() {
                     name="fase_emprendimiento"
                     value={formData.fase_emprendimiento}
                     onChange={handleInputChange}
-                    required
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-official-blue"
                   >
                     <option value="idea">Idea</option>

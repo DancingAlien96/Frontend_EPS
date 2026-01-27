@@ -18,6 +18,7 @@ export default function PublicHeader({ activeView, onViewChange }: PublicHeaderP
   const { user, userProfile, signOut } = useAuth();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showPerfilModal, setShowPerfilModal] = useState(false);
+  const [mobileUserOpen, setMobileUserOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -72,8 +73,11 @@ export default function PublicHeader({ activeView, onViewChange }: PublicHeaderP
                         <button
                           onClick={() => {
                             setMenuOpen(false);
-                            if (onViewChange) return onViewChange(item.key);
-                            router.push(item.path);
+                            if (onViewChange) {
+                              onViewChange?.(item.key);
+                            } else {
+                              router.push(item.path);
+                            }
                           }}
                           style={{
                             padding: '8px 20px',
@@ -179,6 +183,9 @@ export default function PublicHeader({ activeView, onViewChange }: PublicHeaderP
               <PerfilModal open={showPerfilModal} onClose={() => setShowPerfilModal(false)} />
             )}
 
+            {/* Mobile Auth / Avatar */}
+
+
             {/* Hamburger Menu Button Mobile */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
@@ -214,9 +221,43 @@ export default function PublicHeader({ activeView, onViewChange }: PublicHeaderP
         {menuOpen && (
           <div className="mobile-menu px-6 pb-4 border-t border-gray-200">
               <nav className="flex flex-col gap-2 mt-4">
+                {/* Login or user header at top (mobile) */}
+                {!user ? (
+                  <Link href="/auth/login" onClick={() => setMenuOpen(false)} className="px-4 py-3 bg-[#28a745] text-white rounded-md font-semibold hover:bg-[#218838] transition-all text-center">
+                    Iniciar Sesión
+                  </Link>
+                ) : (
+                  <div>
+                    <button type="button" onClick={() => setMobileUserOpen(prev => !prev)} className="flex items-center gap-3 px-4 py-3 w-full text-left">
+                      <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-[#007bff]">
+                        {user.photoURL ? (
+                          <Image src={user.photoURL} alt={user.displayName || 'Usuario'} width={40} height={40} className="object-cover" />
+                        ) : (
+                          <div className="w-full h-full bg-[#007bff] text-white flex items-center justify-center font-bold">{(user.displayName || user.email || 'U')[0].toUpperCase()}</div>
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold">{user.displayName || 'Usuario'}</p>
+                        <p className="text-xs text-gray-500">{user.email}</p>
+                      </div>
+                      <svg className={`w-4 h-4 text-gray-600 transition-transform ${mobileUserOpen ? 'rotate-180' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+
+                    {mobileUserOpen && (
+                      <div className="pl-12 flex flex-col gap-2 mt-2">
+                        <Link href="/dashboard" onClick={() => { setMenuOpen(false); setMobileUserOpen(false); }} className="px-4 py-3 bg-[#f3f4f6] rounded-md text-sm font-medium">📊 Mi Dashboard</Link>
+                        <button onClick={() => { setShowPerfilModal(true); setMenuOpen(false); setMobileUserOpen(false); }} className="px-4 py-3 bg-[#f3f4f6] rounded-md text-sm font-medium text-left">👤 Mi Perfil</button>
+                        <button onClick={async () => { await signOut(); setMenuOpen(false); setMobileUserOpen(false); }} className="px-4 py-3 bg-red-50 text-red-600 rounded-md text-sm font-medium">🚪 Cerrar Sesión</button>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 <button
                   onClick={() => {
-                    onViewChange('inicio');
+                    onViewChange?.('inicio');
                     setMenuOpen(false);
                   }}
                   className={`px-4 py-3 rounded-md font-medium text-left transition-all ${
@@ -229,7 +270,7 @@ export default function PublicHeader({ activeView, onViewChange }: PublicHeaderP
                 </button>
                 <button
                   onClick={() => {
-                    onViewChange('programas');
+                    onViewChange?.('programas');
                     setMenuOpen(false);
                   }}
                   className={`px-4 py-3 rounded-md font-medium text-left transition-all ${
@@ -242,7 +283,7 @@ export default function PublicHeader({ activeView, onViewChange }: PublicHeaderP
                 </button>
                 <button
                   onClick={() => {
-                    onViewChange('eventos');
+                    onViewChange?.('eventos');
                     setMenuOpen(false);
                   }}
                   className={`px-4 py-3 rounded-md font-medium text-left transition-all ${
@@ -256,7 +297,7 @@ export default function PublicHeader({ activeView, onViewChange }: PublicHeaderP
                 <Link
                   href="/noticias"
                   onClick={() => {
-                    onViewChange('noticias');
+                    onViewChange?.('noticias');
                     setMenuOpen(false);
                   }}
                   className={`px-4 py-3 rounded-md font-medium text-left transition-all ${
@@ -269,7 +310,7 @@ export default function PublicHeader({ activeView, onViewChange }: PublicHeaderP
                 </Link>
                 <button
                   onClick={() => {
-                    onViewChange('contacto');
+                    onViewChange?.('contacto');
                     setMenuOpen(false);
                   }}
                   className={`px-4 py-3 rounded-md font-medium text-left transition-all ${
@@ -280,12 +321,7 @@ export default function PublicHeader({ activeView, onViewChange }: PublicHeaderP
                 >
                   Contacto
                 </button>
-                <Link
-                  href="/auth/login"
-                  className="px-4 py-3 bg-[#28a745] text-white rounded-md font-semibold hover:bg-[#218838] transition-all text-center mt-2"
-                >
-                  Iniciar Sesión
-                </Link>
+
               </nav>
             </div>
           )}

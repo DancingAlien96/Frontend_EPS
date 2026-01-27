@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import api from '@/lib/axios';
 import { FiSearch, FiPlus, FiEdit2, FiTrash2, FiCalendar, FiMapPin, FiUsers } from 'react-icons/fi';
+import EventForm from '@/components/admin/EventForm';
 
 interface Evento {
   id_evento: number;
@@ -23,6 +25,9 @@ export default function EventosPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterEstado, setFilterEstado] = useState('');
+  const [showEventModal, setShowEventModal] = useState(false);
+  const [editingEvent, setEditingEvent] = useState<Evento | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     fetchEventos();
@@ -37,6 +42,27 @@ export default function EventosPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleDelete = async (id_evento: number) => {
+    if (!confirm('¿Seguro que deseas eliminar este evento?')) return;
+    try {
+      await api.delete(`/eventos/${id_evento}`);
+      fetchEventos();
+    } catch (error) {
+      console.error('Error al eliminar evento:', error);
+      alert('No se pudo eliminar el evento');
+    }
+  };
+
+  const handleViewInscritos = (id_evento: number) => {
+    // Redirect to inscritos page (implement route later)
+    router.push(`/admin/eventos/${id_evento}/inscritos`);
+  };
+
+  const handleEdit = (evt: Evento) => {
+    setEditingEvent(evt);
+    setShowEventModal(true);
   };
 
   const filteredEventos = eventos.filter(evt => {
@@ -97,7 +123,7 @@ export default function EventosPage() {
             <option value="cancelado">Cancelado</option>
           </select>
 
-          <button className="bg-official-blue text-white px-6 py-2 rounded-lg hover:bg-secondary-blue transition flex items-center gap-2">
+          <button onClick={() => setShowEventModal(true)} className="bg-official-blue text-white px-6 py-2 rounded-lg hover:bg-secondary-blue transition flex items-center gap-2">
             <FiPlus />
             Nuevo Evento
           </button>
@@ -134,13 +160,13 @@ export default function EventosPage() {
               </div>
 
               <div className="flex gap-2 pt-3 border-t border-base">
-                <button className="flex-1 text-blue-600 hover:bg-blue-50 py-2 rounded transition text-sm font-medium">
+                <button onClick={() => handleViewInscritos(evt.id_evento)} className="flex-1 text-blue-600 hover:bg-blue-50 py-2 rounded transition text-sm font-medium">
                   Ver inscritos
                 </button>
-                <button className="text-green-600 hover:bg-green-50 p-2 rounded transition">
+                <button onClick={() => { setEditingEvent(evt); setShowEventModal(true); }} className="text-green-600 hover:bg-green-50 p-2 rounded transition">
                   <FiEdit2 size={18} />
                 </button>
-                <button className="text-red-600 hover:bg-red-50 p-2 rounded transition">
+                <button onClick={() => handleDelete(evt.id_evento)} className="text-red-600 hover:bg-red-50 p-2 rounded transition">
                   <FiTrash2 size={18} />
                 </button>
               </div>
@@ -157,6 +183,21 @@ export default function EventosPage() {
         <div className="mt-6 text-sm text-gray-600">
           Mostrando {filteredEventos.length} de {eventos.length} eventos
         </div>
+
+        {/* Event modal */}
+        {showEventModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="absolute inset-0 bg-black/50" onClick={() => { setShowEventModal(false); setEditingEvent(null); }} />
+            <div className="relative bg-white rounded-lg shadow-xl w-full max-w-2xl p-6 z-60 overflow-auto max-h-[90vh]">
+              <h2 className="text-xl font-semibold mb-4">{editingEvent ? 'Editar Evento' : 'Crear Evento'}</h2>
+              <EventForm
+                initialData={editingEvent}
+                onCancel={() => { setShowEventModal(false); setEditingEvent(null); }}
+                onSuccess={() => { setShowEventModal(false); setEditingEvent(null); fetchEventos(); }}
+              />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

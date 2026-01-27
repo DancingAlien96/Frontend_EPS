@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import HeroCarousel from '@/components/public/HeroCarousel';
 import RegistroModal from '@/components/public/RegistroModal';
 import NoticiasPreview from '@/components/public/NoticiasPreview';
+import EventosPreview from '@/components/public/EventosPreview';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Home() {
@@ -182,6 +183,9 @@ export default function Home() {
                 </div>
               </div>
             </section>
+
+            {/* Próximos Eventos (preview) */}
+            <EventosPreview />
 
             {/* Últimas Noticias (preview) */}
             <NoticiasPreview />

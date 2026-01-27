@@ -1,12 +1,6 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getAnalytics } from "firebase/analytics";
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Lazy client-side Firebase initializer to avoid importing firebase/auth on the server
 const firebaseConfig = {
-  apiKey: process?.env?.NEXT_PUBLIC_FIREBASE_API_KEY || '',
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || '',
   authDomain: 'emprendedoresgt-ad783.firebaseapp.com',
   projectId: 'emprendedoresgt-ad783',
   storageBucket: 'emprendedoresgt-ad783.firebasestorage.app',
@@ -15,13 +9,42 @@ const firebaseConfig = {
   measurementId: 'G-09T95XCFNP'
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+declare global {
+  // attach to globalThis to persist between HMR reloads in dev
+  var __firebaseApp: any | undefined;
+  var __firebaseAuth: any | undefined;
+  var __firebaseAnalytics: any | undefined;
+}
 
-// Initialize Firebase Authentication
-export const auth = getAuth(app);
+export async function getClientAuth() {
+  if (typeof window === 'undefined') return null;
+  if (!firebaseConfig.apiKey) {
+    // If no API key present, silently return null. The caller will handle user-facing errors.
+    return null;
+  }
+  if ((globalThis as any).__firebaseAuth) return (globalThis as any).__firebaseAuth;
 
-// Initialize Analytics (solo en el cliente)
-export const analytics = typeof window !== 'undefined' ? getAnalytics(app) : null;
+  const [{ initializeApp }, { getAuth }, analyticsModule] = await Promise.all([
+    import('firebase/app'),
+    import('firebase/auth'),
+    import('firebase/analytics').catch(() => ({})),
+  ]);
 
-export default app;
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  try {
+    if (analyticsModule && analyticsModule.getAnalytics) {
+      (globalThis as any).__firebaseAnalytics = analyticsModule.getAnalytics(app);
+    }
+  } catch (e) {
+    // ignore analytics errors in environments without support
+  }
+
+  (globalThis as any).__firebaseApp = app;
+  (globalThis as any).__firebaseAuth = auth;
+
+  return auth;
+}
+
+export default null;

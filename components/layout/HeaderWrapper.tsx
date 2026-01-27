@@ -7,8 +7,8 @@ import Footer from '@/components/public/Footer';
 export default function HeaderWrapper() {
   const pathname = usePathname() || '/';
 
-  // Hide header on auth and admin routes
-  const hide = pathname.startsWith('/auth') || pathname.startsWith('/admin');
+  // Hide header on auth and admin routes and on the standalone "volverme emprendedor" page
+  const hide = pathname.startsWith('/auth') || pathname.startsWith('/admin') || pathname === '/volverme-emprendedor';
 
   if (hide) return null;
 

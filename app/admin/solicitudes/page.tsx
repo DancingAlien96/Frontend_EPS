@@ -1,3 +1,64 @@
+"use client";
+
+import React, { useEffect, useState } from 'react';
+import api from '@/lib/axios';
+
+export default function AdminSolicitudes() {
+  const [solicitudes, setSolicitudes] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchSolicitudes = async () => {
+    setLoading(true);
+    try {
+      const res = await api.get('/solicitudes');
+      setSolicitudes(res.data);
+    } catch (err) {
+      console.error(err);
+    } finally { setLoading(false); }
+  };
+
+  useEffect(() => { fetchSolicitudes(); }, []);
+
+  const aprobar = async (id: number) => {
+    if (!confirm('¿Aprobar esta solicitud?')) return;
+    try { await api.post(`/solicitudes/${id}/aprobar`); fetchSolicitudes(); } catch (e) { alert('Error al aprobar'); }
+  };
+
+  const rechazar = async (id: number) => {
+    const motivo = prompt('Motivo de rechazo (opcional):');
+    try { await api.post(`/solicitudes/${id}/rechazar`, { motivo_rechazo: motivo }); fetchSolicitudes(); } catch (e) { alert('Error al rechazar'); }
+  };
+
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-semibold mb-4">Solicitudes para Emprendedor</h1>
+      {loading ? (<div>Cargando...</div>) : (
+        <div className="space-y-4">
+          {solicitudes.map(s => (
+            <div key={s.id_solicitud} className="p-4 border rounded">
+              <div className="flex justify-between items-start">
+                <div>
+                  <div className="font-semibold">{s.nombre_completo} — {s.nombre_emprendimiento}</div>
+                  <div className="text-sm text-gray-600">{s.correo_electronico} • {s.telefono}</div>
+                  <div className="mt-2 text-sm">{s.descripcion_emprendimiento}</div>
+                </div>
+                <div className="text-right">
+                  <div className="mb-2">Estado: <strong>{s.estado_solicitud}</strong></div>
+                  {s.estado_solicitud === 'pendiente' && (
+                    <div className="flex flex-col gap-2">
+                      <button onClick={() => aprobar(s.id_solicitud)} className="px-3 py-1 bg-green-600 text-white rounded">Aprobar</button>
+                      <button onClick={() => rechazar(s.id_solicitud)} className="px-3 py-1 border rounded">Rechazar</button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 'use client';
 
 import { useState, useEffect } from 'react';

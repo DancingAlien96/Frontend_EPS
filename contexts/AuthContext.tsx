@@ -1,18 +1,8 @@
-'use client';
+"use client";
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { 
-  User, 
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut as firebaseSignOut,
-  sendPasswordResetEmail,
-  updateProfile,
-  signInWithPopup,
-  GoogleAuthProvider
-} from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import type { User } from 'firebase/auth';
+import { getClientAuth } from '@/lib/firebase';
 import axios from 'axios';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
@@ -73,33 +63,53 @@ export function AuthProvider({ children }: AuthProviderProps) {
         },
       });
       setUserProfile(response.data);
-    } catch (error) {
-      console.error('Error al obtener perfil:', error);
-      setUserProfile(null);
+    } catch (error: any) {
+      // Si es 404, significa que el perfil no existe aún (usuario no registrado como emprendedor)
+      if (error.response?.status === 404) {
+        console.log('Perfil no encontrado - usuario no registrado como emprendedor');
+        setUserProfile(null);
+      } else {
+        console.error('Error al obtener perfil:', error);
+        setUserProfile(null);
+      }
     }
   };
 
   // Escuchar cambios en el estado de autenticación
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      setUser(firebaseUser);
-      
-      if (firebaseUser) {
-        await fetchUserProfile(firebaseUser);
-      } else {
-        setUserProfile(null);
+    let unsubscribe: (() => void) | null = null;
+    (async () => {
+      const auth = await getClientAuth();
+      if (!auth) {
+        setLoading(false);
+        return;
       }
-      
-      setLoading(false);
-    });
+      const { onAuthStateChanged } = await import('firebase/auth');
+      unsubscribe = onAuthStateChanged(auth, async (firebaseUser: any) => {
+        setUser(firebaseUser);
 
-    return unsubscribe;
+        if (firebaseUser) {
+          await fetchUserProfile(firebaseUser);
+        } else {
+          setUserProfile(null);
+        }
+
+        setLoading(false);
+      });
+    })();
+
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, []);
 
   // Iniciar sesión con email y password
   const signIn = async (email: string, password: string) => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const auth = await getClientAuth();
+      if (!auth) throw new Error('Falta NEXT_PUBLIC_FIREBASE_API_KEY. Añádela en .env.local y reinicia el servidor de desarrollo.');
+      const { signInWithEmailAndPassword } = await import('firebase/auth');
+      await signInWithEmailAndPassword(auth as any, email, password);
     } catch (error: any) {
       console.error('Error al iniciar sesión:', error);
       throw new Error(getErrorMessage(error.code));
@@ -109,14 +119,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // Iniciar sesión con Google
   const signInWithGoogle = async () => {
     try {
-      const provider = new GoogleAuthProvider();
-      provider.setCustomParameters({
-        prompt: 'select_account'
-      });
-      
-      const result = await signInWithPopup(auth, provider);
+      const auth = await getClientAuth();
+      if (!auth) throw new Error('Falta NEXT_PUBLIC_FIREBASE_API_KEY. Añádela en .env.local y reinicia el servidor de desarrollo.');
+
+      const firebaseAuthModule = await import('firebase/auth');
+      const provider = new firebaseAuthModule.GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: 'select_account' });
+
+      const { signInWithPopup } = firebaseAuthModule;
+      const result = await signInWithPopup(auth as any, provider);
       const user = result.user;
-      
+
       // Verificar si el usuario ya existe en el backend
       const token = await user.getIdToken();
       try {
@@ -147,8 +160,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const signUp = async (email: string, password: string, userData: any) => {
     try {
       // 1. Crear usuario en Firebase
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      
+      const auth = await getClientAuth();
+      if (!auth) throw new Error('Falta NEXT_PUBLIC_FIREBASE_API_KEY. Añádela en .env.local y reinicia el servidor de desarrollo.');
+      const { createUserWithEmailAndPassword, updateProfile } = await import('firebase/auth');
+      const userCredential = await createUserWithEmailAndPassword(auth as any, email, password);
+
       // 2. Actualizar perfil de Firebase
       await updateProfile(userCredential.user, {
         displayName: userData.nombre_completo,
@@ -174,7 +190,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // Cerrar sesión
   const signOut = async () => {
     try {
-      await firebaseSignOut(auth);
+      const auth = await getClientAuth();
+      if (!auth) return;
+      const { signOut: firebaseSignOut } = await import('firebase/auth');
+      await firebaseSignOut(auth as any);
       setUserProfile(null);
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
@@ -185,7 +204,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // Recuperar contraseña
   const resetPassword = async (email: string) => {
     try {
-      await sendPasswordResetEmail(auth, email);
+      const auth = await getClientAuth();
+      if (!auth) throw new Error('Falta NEXT_PUBLIC_FIREBASE_API_KEY. Añádela en .env.local y reinicia el servidor de desarrollo.');
+      const { sendPasswordResetEmail } = await import('firebase/auth');
+      await sendPasswordResetEmail(auth as any, email);
     } catch (error: any) {
       console.error('Error al enviar email de recuperación:', error);
       throw new Error(getErrorMessage(error.code));

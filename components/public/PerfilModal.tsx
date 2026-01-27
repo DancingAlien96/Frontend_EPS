@@ -50,7 +50,7 @@ export default function PerfilModal({ open, onClose }: { open: boolean; onClose:
                   <p className="text-sm text-gray-600 mt-1">Completa una breve encuesta para verificar tu emprendimiento y acceder a herramientas especiales.</p>
                   <div className="mt-4 flex gap-3">
                     <a
-                      href="/emprendedor/encuesta"
+                      href="/volverme-emprendedor"
                       className="px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded shadow"
                     >
                       Volverme emprendedor
