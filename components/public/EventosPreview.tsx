@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import api from '@/lib/axios';
 import Link from 'next/link';
 
@@ -75,7 +76,7 @@ export default function EventosPreview() {
     <section className="py-12">
       <div className="max-w-6xl mx-auto px-6">
         <div className="news-hero">
-          <h2>Próximos Eventos</h2>
+          <h2 className="font-serif">Próximos Eventos</h2>
           <div style={{ marginTop: '8px' }}>
             <Link href="/eventos" className="text-official-blue font-semibold">Ver todos →</Link>
           </div>
@@ -83,21 +84,26 @@ export default function EventosPreview() {
 
         <div className="news-grid">
           {renderEventos.map(e => (
-            <article key={e.id_evento} className="news-card">
+            <motion.article
+              key={e.id_evento}
+              className="news-card rounded-3xl shadow-card hover:shadow-card-hover transition-shadow"
+              whileHover={{ y: -8 }}
+              transition={{ duration: 0.3 }}
+            >
               <img src={e.imagen_evento || 'https://via.placeholder.com/400x250/eeeeee/aaaaaa?text=Evento'} alt={e.nombre_evento} />
 
               <div className="news-content">
                 <div className="news-date">{formatDate(e.fecha_evento)} {formatTime(e.hora_inicio)}</div>
 
-                <h3>{e.nombre_evento}</h3>
+                <h3 className="font-serif">{e.nombre_evento}</h3>
                 <p>{e.descripcion.slice(0, 120)}...</p>
                 <div style={{ marginTop: 8, fontSize: '0.9rem', color: '#666' }}>
                   📍 {e.lugar}
                 </div>
 
-                <Link href={`/eventos/${e.id_evento}`} className="leer-mas">Ver detalles →</Link>
+                <Link href={`/eventos/${e.id_evento}`} className="leer-mas rounded-2xl">Ver detalles →</Link>
               </div>
-            </article>
+            </motion.article>
           ))}
         </div>
       </div>

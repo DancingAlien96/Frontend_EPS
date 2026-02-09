@@ -25,49 +25,60 @@ export default function PublicHeader({ activeView, onViewChange }: PublicHeaderP
   return (
     <>
       {/* Top Bar */}
-      <div className="bg-[#003d7a] text-white py-2 px-6 text-sm">
+      <div className="bg-[#1a2332] text-white py-2 px-6 text-sm">
         <div className="flex justify-between items-center max-w-7xl mx-auto">
-          <div className="flex gap-5">
-            <span>📞 Línea gratuita: 1500</span>
-            <span>📧 info@mineco.gob.gt</span>
+          <div className="flex gap-6">
+            <span className="flex items-center gap-2">📞 Línea gratuita: 1500</span>
+            <span className="flex items-center gap-2">📧 info@mineco.gob.gt</span>
+          </div>
+          <div className="flex gap-6">
+            <a href="#soporte" className="hover:text-gray-300 transition-colors">Soporte</a>
+            <a href="https://www.guatemala.gob.gt" target="_blank" rel="noopener noreferrer" className="hover:text-gray-300 transition-colors">Portal Gobierno</a>
           </div>
         </div>
       </div>
 
       {/* Main Header */}
-      <header className="bg-white shadow-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+      <header className="bg-white shadow-sm sticky top-0 z-50 border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-6 py-3">
           <div className="flex justify-between items-center">
             {/* Logo */}
-            <div className="flex items-center gap-4">
-              <Image
-                src="/logo.png"
-                alt="Logo Sistema de Emprendedores"
-                width={80}
-                height={80}
-                className="object-contain"
-                priority
-              />
+            <div className="flex items-center gap-3">
+              <div className="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
+                <Image
+                  src="/logo.png"
+                  alt="Logo"
+                  width={56}
+                  height={56}
+                  className="object-contain"
+                  priority
+                />
+              </div>
               <div>
-                <h1 className="text-2xl font-bold text-[#003d7a]">
+                <h1 className="text-lg font-bold text-gray-900 leading-tight">
                   Sistema de Emprendedores
                 </h1>
-                <p className="text-sm text-gray-600">Chiquimula, Guatemala</p>
+                <p className="text-xs text-gray-500 uppercase tracking-wide">Chiquimula, Guatemala</p>
               </div>
             </div>
 
             {/* Desktop Navigation */}
-            <div className="desktop-nav">
+            <div className="desktop-nav flex items-center gap-1">
               <nav>
-                <ul style={{ display: 'flex', listStyle: 'none', margin: 0, padding: 0, gap: '8px' }}>
+                <ul className="flex items-center list-none m-0 p-0 gap-1">
                   {[
                     { key: 'inicio', label: 'Inicio', path: '/' },
                     { key: 'programas', label: 'Programas', path: '/programas' },
                     { key: 'eventos', label: 'Eventos', path: '/eventos' },
+                    { key: 'recursos', label: 'Recursos', path: '/recursos' },
                     { key: 'noticias', label: 'Noticias', path: '/noticias' },
                     { key: 'contacto', label: 'Contacto', path: '/contacto' },
                   ].map(item => {
-                    const isActive = activeView ? activeView === item.key : pathname?.startsWith(item.path);
+                    const isActive = activeView 
+                      ? activeView === item.key 
+                      : item.path === '/' 
+                        ? pathname === '/' 
+                        : pathname?.startsWith(item.path);
                     return (
                       <li key={item.key}>
                         <button
@@ -79,18 +90,16 @@ export default function PublicHeader({ activeView, onViewChange }: PublicHeaderP
                               router.push(item.path);
                             }
                           }}
-                          style={{
-                            padding: '8px 20px',
-                            borderRadius: '6px',
-                            fontWeight: '600',
-                            border: 'none',
-                            cursor: 'pointer',
-                            backgroundColor: isActive ? '#007bff' : 'transparent',
-                            color: isActive ? 'white' : '#1a1a1a',
-                          }}
-                          className={!isActive ? 'hover:bg-[#007bff] hover:text-white transition-all' : ''}
+                          className={`px-4 py-2 text-sm font-medium transition-all relative ${
+                            isActive 
+                              ? 'text-blue-600' 
+                              : 'text-gray-700 hover:text-blue-600'
+                          }`}
                         >
                           {item.label}
+                          {isActive && (
+                            <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 rounded-full"></span>
+                          )}
                         </button>
                       </li>
                     );
@@ -99,28 +108,44 @@ export default function PublicHeader({ activeView, onViewChange }: PublicHeaderP
               </nav>
               
               {user ? (
-                <div className="relative" style={{ marginLeft: '16px' }}>
-                  <button
-                    onClick={() => setShowUserMenu(!showUserMenu)}
-                    className="flex items-center gap-2 hover:opacity-80 transition-all"
-                  >
-                    {user.photoURL ? (
-                      <Image
-                        src={user.photoURL}
-                        alt={user.displayName || 'Usuario'}
-                        width={40}
-                        height={40}
-                        className="rounded-full border-2 border-[#007bff]"
-                      />
-                    ) : (
-                      <div className="w-10 h-10 rounded-full bg-[#007bff] text-white flex items-center justify-center font-bold">
-                        {(user.displayName || user.email || 'U')[0].toUpperCase()}
-                      </div>
-                    )}
-                    <span className="text-gray-700 font-semibold hidden lg:block">
-                      {user.displayName || user.email?.split('@')[0]}
-                    </span>
+                <div className="flex items-center gap-4 ml-4">
+                  {/* Notification Icon */}
+                  <button className="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
+                    <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                    </svg>
+                    <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
                   </button>
+                  
+                  {/* User Menu */}
+                  <div className="relative">
+                    <button
+                      onClick={() => setShowUserMenu(!showUserMenu)}
+                      className="flex items-center gap-3 hover:bg-gray-50 rounded-lg px-3 py-2 transition-all"
+                    >
+                      {user.photoURL ? (
+                        <Image
+                          src={user.photoURL}
+                          alt={user.displayName || 'Usuario'}
+                          width={40}
+                          height={40}
+                          className="rounded-full"
+                        />
+                      ) : (
+                        <div className="w-10 h-10 rounded-full bg-gray-300 text-gray-700 flex items-center justify-center font-semibold">
+                          {(user.displayName || user.email || 'U')[0].toUpperCase()}
+                        </div>
+                      )}
+                      <div className="text-left">
+                        <p className="text-sm font-semibold text-gray-900">{user.displayName || 'Usuario'}</p>
+                        <p className="text-xs text-gray-500">
+                          {userProfile?.rol === 'administrador' || userProfile?.rol === 'superusuario' ? 'Admin' : 'Emprendedor'}
+                        </p>
+                      </div>
+                      <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
 
                   {showUserMenu && (
                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50">
@@ -157,21 +182,12 @@ export default function PublicHeader({ activeView, onViewChange }: PublicHeaderP
                       </button>
                     </div>
                   )}
+                  </div>
                 </div>
               ) : (
                 <Link
                   href="/auth/login"
-                  style={{
-                    padding: '8px 24px',
-                    backgroundColor: '#28a745',
-                    color: 'white',
-                    borderRadius: '6px',
-                    fontWeight: '600',
-                    textDecoration: 'none',
-                    display: 'inline-block',
-                    marginLeft: '16px'
-                  }}
-                  className="hover:bg-[#218838] transition-all"
+                  className="ml-4 px-6 py-2 bg-gradient-to-r from-slate-800 to-slate-700 text-white rounded-2xl font-semibold hover:from-slate-900 hover:to-slate-800 transition-all text-sm shadow-elegant hover:shadow-elegant-lg"
                 >
                   Iniciar Sesión
                 </Link>
@@ -223,7 +239,7 @@ export default function PublicHeader({ activeView, onViewChange }: PublicHeaderP
               <nav className="flex flex-col gap-2 mt-4">
                 {/* Login or user header at top (mobile) */}
                 {!user ? (
-                  <Link href="/auth/login" onClick={() => setMenuOpen(false)} className="px-4 py-3 bg-[#28a745] text-white rounded-md font-semibold hover:bg-[#218838] transition-all text-center">
+                  <Link href="/auth/login" onClick={() => setMenuOpen(false)} className="px-4 py-3 bg-gradient-to-r from-slate-800 to-slate-700 text-white rounded-2xl font-semibold hover:from-slate-900 hover:to-slate-800 transition-all text-center shadow-elegant">
                     Iniciar Sesión
                   </Link>
                 ) : (
@@ -294,6 +310,19 @@ export default function PublicHeader({ activeView, onViewChange }: PublicHeaderP
                 >
                   Eventos
                 </button>
+                <Link
+                  href="/recursos"
+                  onClick={() => {
+                    setMenuOpen(false);
+                  }}
+                  className={`px-4 py-3 rounded-md font-medium text-left transition-all ${
+                    pathname === '/recursos'
+                      ? 'bg-[#007bff] text-white'
+                      : 'text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  Recursos
+                </Link>
                 <Link
                   href="/noticias"
                   onClick={() => {

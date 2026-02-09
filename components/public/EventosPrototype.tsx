@@ -60,24 +60,24 @@ export default async function EventosPrototype() {
   return (
     <section className="news-section" aria-label="Sección de Eventos">
       <div style={{ padding: '60px 30px', maxWidth: 1200, margin: '0 auto' }}>
-        <h1 style={{ fontSize: '2.5rem', textAlign: 'center', marginBottom: 15, color: '#333' }}>Próximos Eventos</h1>
+        <h1 className="font-serif" style={{ fontSize: '2.5rem', textAlign: 'center', marginBottom: 15, color: '#333' }}>Próximos Eventos</h1>
         <p style={{ textAlign: 'center', color: '#666', marginBottom: 50, fontSize: '1.1rem' }}>Descubre los eventos próximos y inscríbete</p>
 
         <div className="news-grid">
           {items.map((e: any) => (
-            <div key={e.id_evento} className="news-card">
+            <div key={e.id_evento} className="news-card rounded-3xl shadow-card hover:shadow-card-hover transition-shadow">
               <img src={e.imagen_evento || 'https://via.placeholder.com/400x250/eeeeee/aaaaaa?text=Evento'} alt={e.nombre_evento} />
               <div className="news-content">
                 <div className="news-date">
                   📅 {e.fecha_evento ? new Date(e.fecha_evento).toLocaleDateString('es-GT', { day: 'numeric', month: 'long', year: 'numeric' }) : ''}
                   {e.hora_inicio && ` • 🕐 ${e.hora_inicio}`}
                 </div>
-                <h3>{e.nombre_evento}</h3>
+                <h3 className="font-serif">{e.nombre_evento}</h3>
                 <p>{e.descripcion.slice(0, 120)}...</p>
                 <div style={{ marginTop: 10, fontSize: '0.9rem', color: '#666' }}>
                   📍 {e.lugar}
                 </div>
-                <Link href={`/eventos/${e.id_evento}`} className="leer-mas">Ver detalles →</Link>
+                <Link href={`/eventos/${e.id_evento}`} className="leer-mas rounded-2xl">Ver detalles →</Link>
               </div>
             </div>
           ))}

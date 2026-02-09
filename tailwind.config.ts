@@ -20,6 +20,21 @@ export default {
         'success-green': '#28a745',
         'warning-orange': '#ffc107',
       },
+      boxShadow: {
+        'elegant': '0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.05)',
+        'elegant-lg': '0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04)',
+        'elegant-xl': '0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.03)',
+        'elegant-2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.15)',
+        'card': '0 2px 8px rgba(0, 61, 122, 0.08)',
+        'card-hover': '0 8px 24px rgba(0, 61, 122, 0.12)',
+      },
+      fontFamily: {
+        'serif': ['Playfair Display', 'Georgia', 'serif'],
+      },
+      borderRadius: {
+        '4xl': '2rem',
+        '5xl': '2.5rem',
+      },
     },
   },
   plugins: [],

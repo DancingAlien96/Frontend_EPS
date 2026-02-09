@@ -7,7 +7,7 @@ export default function Footer() {
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
             <img src="/logo.png" alt="Logo" style={{ width: 64, height: 64, objectFit: 'contain' }} />
             <div>
-              <h3>Sistema de Emprendedores</h3>
+              <h3 className="font-serif">Sistema de Emprendedores</h3>
               <p className="muted">Ministerio de Economía • Chiquimula</p>
             </div>
           </div>
@@ -15,14 +15,14 @@ export default function Footer() {
         </div>
 
         <div className="footer-mid">
-          <h3>Contacto</h3>
+          <h3 className="font-serif">Contacto</h3>
           <p className="muted">📞 Línea gratuita: <strong>1500</strong></p>
           <p className="muted">📧 <a href="mailto:info@mineco.gob.gt">info@mineco.gob.gt</a></p>
           <p className="muted">📍 Chiquimula, Guatemala</p>
         </div>
 
         <div className="footer-links-col">
-          <h3>Enlaces</h3>
+          <h3 className="font-serif">Enlaces</h3>
           <ul className="footer-links">
             <li><a href="/">Inicio</a></li>
             <li><a href="/noticias">Noticias</a></li>
@@ -32,7 +32,7 @@ export default function Footer() {
         </div>
 
         <div className="footer-right">
-          <h3>Síguenos</h3>
+          <h3 className="font-serif">Síguenos</h3>
           <div style={{ display: 'flex', gap: 10, marginTop: 6 }}>
             <a href="#" aria-label="Facebook" className="social">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 12C22 6.48 17.52 2 12 2S2 6.48 2 12c0 4.84 3.44 8.84 8 9.8v-6.93H7.5V12H10V9.5c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.76-1.6 1.54V12h2.8l-.45 2.87H13.2v6.93c4.56-.96 8-4.96 8-9.8z" fill="currentColor"/></svg>
@@ -42,7 +42,7 @@ export default function Footer() {
             </a>
           </div>
           <div style={{ marginTop: 12 }}>
-            <a href="/" className="btn-cta">Contáctanos</a>
+            <a href="/" className="btn-cta rounded-2xl">Contáctanos</a>
           </div>
         </div>
       </div>

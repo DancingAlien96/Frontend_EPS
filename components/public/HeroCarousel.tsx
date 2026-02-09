@@ -71,7 +71,7 @@ export default function HeroCarousel({ onOpenModal }: HeroCarouselProps) {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="text-2xl sm:text-3xl md:text-5xl font-bold text-white mb-4 md:mb-6 drop-shadow-2xl"
+          className="text-2xl sm:text-3xl md:text-5xl font-serif font-bold text-white mb-4 md:mb-6 drop-shadow-2xl"
         >
           ¡Impulsa tu Emprendimiento!
         </motion.h1>
@@ -80,7 +80,7 @@ export default function HeroCarousel({ onOpenModal }: HeroCarouselProps) {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 }}
-          className="text-sm sm:text-base md:text-xl text-white bg-[#003d7a]/95 sm:bg-[#003d7a]/90 px-4 sm:px-10 py-3 sm:py-6 rounded-xl max-w-3xl mx-auto mb-4 sm:mb-6 drop-shadow-lg leading-relaxed"
+          className="text-sm sm:text-base md:text-xl text-white bg-[#003d7a]/95 sm:bg-[#003d7a]/90 px-4 sm:px-10 py-3 sm:py-6 rounded-3xl max-w-3xl mx-auto mb-4 sm:mb-6 drop-shadow-lg leading-relaxed shadow-elegant-xl"
         >
           Sistema de apoyo dedicado al desarrollo empresarial en los 11 municipios
           de Chiquimula. Te ofrecemos capacitación, financiamiento y asesoría
@@ -95,7 +95,7 @@ export default function HeroCarousel({ onOpenModal }: HeroCarouselProps) {
         >
           <button
             onClick={onOpenModal}
-            className="w-full sm:w-auto px-8 py-3 bg-[#28a745] text-white rounded-lg font-semibold text-base sm:text-lg hover:bg-[#218838] transform hover:-translate-y-0.5 transition-all shadow-lg"
+            className="w-full sm:w-auto px-8 py-3 bg-[#28a745] text-white rounded-2xl font-semibold text-base sm:text-lg hover:bg-[#218838] transform hover:-translate-y-0.5 transition-all shadow-elegant-lg hover:shadow-elegant-xl"
           >
             ✨ Registrarme como Emprendedor
           </button>
