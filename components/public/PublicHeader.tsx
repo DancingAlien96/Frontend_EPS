@@ -25,13 +25,13 @@ export default function PublicHeader({ activeView, onViewChange }: PublicHeaderP
   return (
     <>
       {/* Top Bar */}
-      <div className="bg-[#1a2332] text-white py-2 px-6 text-sm">
-        <div className="flex justify-between items-center max-w-7xl mx-auto">
-          <div className="flex gap-6">
-            <span className="flex items-center gap-2">📞 Línea gratuita: 1500</span>
-            <span className="flex items-center gap-2">📧 info@mineco.gob.gt</span>
+      <div className="bg-[#1a2332] text-white py-2 px-3 sm:px-6 text-xs sm:text-sm">
+        <div className="flex flex-col sm:flex-row justify-between items-center max-w-7xl mx-auto gap-2 sm:gap-0">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 text-center sm:text-left">
+            <span className="flex items-center justify-center sm:justify-start gap-1 sm:gap-2">📞 Línea gratuita: 1500</span>
+            <span className="flex items-center justify-center sm:justify-start gap-1 sm:gap-2 hidden sm:flex">📧 info@mineco.gob.gt</span>
           </div>
-          <div className="flex gap-6">
+          <div className="hidden md:flex gap-4 lg:gap-6">
             <a href="#soporte" className="hover:text-gray-300 transition-colors">Soporte</a>
             <a href="https://www.guatemala.gob.gt" target="_blank" rel="noopener noreferrer" className="hover:text-gray-300 transition-colors">Portal Gobierno</a>
           </div>
@@ -90,15 +90,15 @@ export default function PublicHeader({ activeView, onViewChange }: PublicHeaderP
                               router.push(item.path);
                             }
                           }}
-                          className={`px-4 py-2 text-sm font-medium transition-all relative ${
+                          className={`px-4 py-2 text-sm font-medium transition-all duration-300 relative ${
                             isActive 
-                              ? 'text-blue-600' 
-                              : 'text-gray-700 hover:text-blue-600'
+                              ? 'text-[#0F172A]' 
+                              : 'text-gray-600 hover:text-[#C5A659]'
                           }`}
                         >
                           {item.label}
                           {isActive && (
-                            <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 rounded-full"></span>
+                            <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#C5A659] rounded-full"></span>
                           )}
                         </button>
                       </li>
@@ -187,7 +187,7 @@ export default function PublicHeader({ activeView, onViewChange }: PublicHeaderP
               ) : (
                 <Link
                   href="/auth/login"
-                  className="ml-4 px-6 py-2 bg-gradient-to-r from-slate-800 to-slate-700 text-white rounded-2xl font-semibold hover:from-slate-900 hover:to-slate-800 transition-all text-sm shadow-elegant hover:shadow-elegant-lg"
+                  className="ml-4 px-6 py-2 bg-[#0F172A] text-white rounded-2xl font-semibold hover:bg-[#1e293b] transition-all duration-300 text-sm shadow-md hover:shadow-lg"
                 >
                   Iniciar Sesión
                 </Link>
