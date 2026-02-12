@@ -6,6 +6,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import HeaderWrapper from '@/components/layout/HeaderWrapper';
 import Footer from '@/components/public/Footer';
 import FooterWrapper from '@/components/layout/FooterWrapper';
+import BottomNav from '@/components/public/BottomNav';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,9 +41,13 @@ export default function RootLayout({
       >
         <AuthProvider>
           <HeaderWrapper />
-          {children}
+          <div className="pb-16 md:pb-0">
+            {children}
+          </div>
           {/* Footer: rendered via FooterWrapper which hides on auth routes */}
           <FooterWrapper />
+          {/* Bottom Navigation for mobile */}
+          <BottomNav />
         </AuthProvider>
       </body>
     </html>

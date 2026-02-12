@@ -62,6 +62,18 @@
   }
 }
 
+/* Safe area for bottom navigation on mobile devices */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Ensure smooth transitions for bottom nav */
+@media (max-width: 767px) {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
 html {
   font-size: 16px;
   scroll-behavior: smooth;
