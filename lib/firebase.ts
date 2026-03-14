@@ -27,14 +27,14 @@ export async function getClientAuth() {
   const [{ initializeApp }, { getAuth }, analyticsModule] = await Promise.all([
     import('firebase/app'),
     import('firebase/auth'),
-    import('firebase/analytics').catch(() => ({})),
+    import('firebase/analytics').catch(() => null),
   ]);
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
   try {
-    if (analyticsModule && analyticsModule.getAnalytics) {
+    if (analyticsModule?.getAnalytics) {
       (globalThis as any).__firebaseAnalytics = analyticsModule.getAnalytics(app);
     }
   } catch (e) {

@@ -12,7 +12,7 @@ export const uploadRouter = {
     .onUploadComplete(async ({ file, metadata }) => {
       console.log('✓ Logotipo subido', { url: file.url, metadata });
     }),
-  catalogo: f({ 'application/pdf': { maxFileSize: '12MB' } })
+  catalogo: f({ 'application/pdf': { maxFileSize: '16MB' } })
     .middleware(baseMiddleware)
     .onUploadComplete(async ({ file, metadata }) => {
       console.log('✓ Catálogo subido', { url: file.url, metadata });

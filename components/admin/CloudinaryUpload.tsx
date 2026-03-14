@@ -78,7 +78,8 @@ export default function CloudinaryUpload({ label, value = '', onChange, onUpload
   };
 
   const handleRemove = () => {
-    onChange('');
+    if (typeof onChange === 'function') onChange('');
+    else if (typeof onUpload === 'function') onUpload('');
   };
 
   const handleButtonClick = () => {

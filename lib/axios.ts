@@ -42,7 +42,8 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     // Log de debug para ver qué URL estamos llamando
-    console.log('🌐 API Request:', config.method?.toUpperCase(), config.baseURL + config.url);
+    const requestUrl = `${config.baseURL ?? ''}${config.url ?? ''}`;
+    console.log('🌐 API Request:', config.method?.toUpperCase(), requestUrl);
     
     // Intentar obtener token de admin primero, luego token público
     const adminToken = localStorage.getItem('admin_token');

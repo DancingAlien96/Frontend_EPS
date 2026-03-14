@@ -31,6 +31,7 @@ interface Emprendedor {
   fecha_nacimiento: string;
   genero: string;
   telefono: string;
+  foto_perfil?: string;
   telefono_secundario?: string;
   correo_electronico: string;
   id_municipio: number;
@@ -287,6 +288,7 @@ export default function EmprendedoresPage() {
 
   const handleEdit = (emp: Emprendedor) => {
     setFormData({
+      tipo_persona: 'individual',
       nombre_completo: emp.nombre_completo || '',
       dpi: emp.dpi || '',
       fecha_nacimiento: emp.fecha_nacimiento ? emp.fecha_nacimiento.split('T')[0] : '',
@@ -416,6 +418,7 @@ export default function EmprendedoresPage() {
 
   const resetForm = () => {
     setFormData({
+      tipo_persona: 'individual',
       nombre_completo: '',
       dpi: '',
       fecha_nacimiento: '',

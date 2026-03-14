@@ -1,4 +1,4 @@
-import { UploadButton } from '@uploadthing/react';
+import { UploadButton } from '@/lib/uploadthing';
 import type { UploadRouter } from '@/app/api/uploadthing/core';
 
 interface UploadFieldProps {
@@ -26,7 +26,7 @@ export function UploadField({ label, endpoint, value, onChange, helper }: Upload
         )}
       </div>
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
-        <UploadButton<UploadRouter>
+        <UploadButton
           endpoint={endpoint}
           onClientUploadComplete={(res) => {
             const url = res?.[0]?.url || null;

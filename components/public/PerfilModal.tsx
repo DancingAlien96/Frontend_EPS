@@ -6,6 +6,11 @@ import { useAuth } from '@/contexts/AuthContext';
 export default function PerfilModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { user, userProfile, loading } = useAuth();
   const role = (userProfile?.rol || 'usuario').toString().toLowerCase();
+  const nombreCompleto = userProfile?.full_name || user?.displayName || 'Usuario';
+  const correo = userProfile?.email || user?.email || '';
+  const telefono = userProfile?.phone_number;
+  const nombreEmprendimiento = userProfile?.specific_profile?.venture_name || userProfile?.specific_profile?.business_name;
+  const rolActual = userProfile?.rol || userProfile?.member_type || 'usuario';
   
   // Detectar si el usuario está pendiente de aprobación
   const estaPendienteAprobacion = userProfile && 
@@ -132,13 +137,13 @@ export default function PerfilModal({ open, onClose }: { open: boolean; onClose:
                     className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border"
                   />
                   <div className="text-center sm:text-left flex-1">
-                    <h3 className="text-base sm:text-lg font-semibold text-gray-900">{userProfile?.nombre_completo || user?.displayName || 'Usuario'}</h3>
-                    <p className="text-xs sm:text-sm text-gray-500">{userProfile?.correo_electronico || user?.email}</p>
+                    <h3 className="text-base sm:text-lg font-semibold text-gray-900">{nombreCompleto}</h3>
+                    <p className="text-xs sm:text-sm text-gray-500">{correo}</p>
 
                     <div className="mt-3 text-xs sm:text-sm text-gray-700 space-y-1">
-                      <p><strong>Rol:</strong> {userProfile?.rol || 'usuario'}</p>
-                      {userProfile?.telefono && <p><strong>Teléfono:</strong> {userProfile.telefono}</p>}
-                      {userProfile?.nombre_emprendimiento && <p><strong>Emprendimiento:</strong> {userProfile.nombre_emprendimiento}</p>}
+                      <p><strong>Rol:</strong> {rolActual}</p>
+                      {telefono && <p><strong>Teléfono:</strong> {telefono}</p>}
+                      {nombreEmprendimiento && <p><strong>Emprendimiento:</strong> {nombreEmprendimiento}</p>}
                     </div>
                   </div>
                 </div>

@@ -6,6 +6,12 @@ import { useAuth } from "@/contexts/AuthContext";
 export default function MiPerfilPage() {
   const { userProfile, loading } = useAuth();
 
+  const displayName = userProfile?.full_name || 'Sin nombre';
+  const displayEmail = userProfile?.email || '';
+  const displayPhone = userProfile?.phone_number || '';
+  const displayRole = userProfile?.rol || userProfile?.member_type || 'usuario';
+  const specificProfile = userProfile?.specific_profile as { nombre_emprendimiento?: string; id?: number } | undefined;
+
   if (loading) return <div className="p-6">Cargando perfil...</div>;
   if (!userProfile) return <div className="p-6">No se encontró información de perfil.</div>;
 
@@ -23,16 +29,16 @@ export default function MiPerfilPage() {
         </div>
 
         <div className="flex-1">
-          <h2 className="text-xl font-semibold">{userProfile.nombre_completo}</h2>
-          <p className="text-sm text-gray-600">{userProfile.correo_electronico}</p>
+          <h2 className="text-xl font-semibold">{displayName}</h2>
+          <p className="text-sm text-gray-600">{displayEmail}</p>
 
           <div className="mt-4 space-y-2 text-sm text-gray-700">
-            <p><strong>Rol:</strong> {userProfile.rol}</p>
-            {userProfile.telefono && <p><strong>Teléfono:</strong> {userProfile.telefono}</p>}
-            {userProfile.nombre_emprendimiento && (
-              <p><strong>Emprendimiento:</strong> {userProfile.nombre_emprendimiento}</p>
+            <p><strong>Rol:</strong> {displayRole}</p>
+            {displayPhone && <p><strong>Teléfono:</strong> {displayPhone}</p>}
+            {specificProfile?.nombre_emprendimiento && (
+              <p><strong>Emprendimiento:</strong> {specificProfile.nombre_emprendimiento}</p>
             )}
-            {userProfile.id_emprendedor && <p><strong>ID emprendedor:</strong> {userProfile.id_emprendedor}</p>}
+            {specificProfile?.id && <p><strong>ID emprendedor:</strong> {specificProfile.id}</p>}
           </div>
 
           <div className="mt-6">
