@@ -41,9 +41,17 @@ const api = axios.create({
 // Interceptor para agregar el token JWT
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
+    // Log de debug para ver qué URL estamos llamando
+    console.log('🌐 API Request:', config.method?.toUpperCase(), config.baseURL + config.url);
+    
+    // Intentar obtener token de admin primero, luego token público
+    const adminToken = localStorage.getItem('admin_token');
+    const publicToken = localStorage.getItem('token');
+    const token = adminToken || publicToken;
+    
+    if (token && !config.headers.Authorization) {
       config.headers.Authorization = `Bearer ${token}`;
+      console.log('🔑 Token adjuntado:', adminToken ? 'ADMIN' : 'PUBLIC');
     }
     return config;
   },
@@ -57,9 +65,19 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
+      // Limpiar TODOS los tokens (admin y público)
+      localStorage.removeItem('admin_token');
+      localStorage.removeItem('admin_user');
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      window.location.href = '/admin';
+      
+      console.log('🚨 Error 401: Tokens limpiados');
+      
+      // Solo redirigir si estamos en rutas protegidas de admin
+      if (typeof window !== 'undefined' && window.location.pathname.startsWith('/admin')) {
+        console.log('↪️ Redirigiendo a login de admin');
+        window.location.href = '/admin';
+      }
     }
     return Promise.reject(error);
   }

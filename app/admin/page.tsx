@@ -32,10 +32,28 @@ export default function AdminLogin() {
       console.log('Usuario:', response.data.usuario);
       
       console.log('💾 Guardando en localStorage...');
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.usuario));
-      console.log('✓ Token guardado en localStorage');
-      console.log('✓ Usuario guardado en localStorage');
+      try {
+        // Usar namespace 'admin_' para evitar conflictos con sesiones públicas
+        localStorage.setItem('admin_token', response.data.token);
+        localStorage.setItem('admin_user', JSON.stringify(response.data.usuario));
+        
+        // Verificar que se guardó correctamente
+        const tokenGuardado = localStorage.getItem('admin_token');
+        const userGuardado = localStorage.getItem('admin_user');
+        
+        if (!tokenGuardado || !userGuardado) {
+          throw new Error('localStorage no guardó los datos correctamente');
+        }
+        
+        console.log('✓ Token guardado en localStorage (admin_token)');
+        console.log('✓ Usuario guardado en localStorage (admin_user)');
+        console.log('✓ Verificación: Datos recuperados correctamente');
+      } catch (storageError) {
+        console.error('❌ ERROR al guardar en localStorage:', storageError);
+        console.error('El navegador puede estar bloqueando localStorage');
+        console.error('Solución: Desactivar Brave Shields o bloqueadores de privacidad');
+        throw new Error('No se pudo guardar la sesión. Verifica la configuración de privacidad del navegador.');
+      }
       
       console.log('🔄 Redirigiendo a /admin/dashboard...');
       console.log('═══════════════════════════════════════\n');

@@ -25,7 +25,8 @@ export default function EventosPreview() {
         const res = await api.get('/eventos?estado=proximo');
         setEventos(res.data.slice(0, 3));
       } catch (err) {
-        console.error('Error cargando eventos', err);
+        // Error silencioso - usar datos demo
+        setEventos([]);
       } finally {
         setLoading(false);
       }

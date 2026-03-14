@@ -41,7 +41,8 @@ export default function Sidebar({ isOpen, onClose, isDesktop }: SidebarProps) {
   const [usuario, setUsuario] = useState<any>(null);
 
   useEffect(() => {
-    const userStr = localStorage.getItem('user');
+    // Buscar datos con namespace 'admin_'
+    const userStr = localStorage.getItem('admin_user');
     if (userStr) {
       setUsuario(JSON.parse(userStr));
     }

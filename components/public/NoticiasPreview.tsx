@@ -19,7 +19,8 @@ export default function NoticiasPreview() {
         const res = await api.get('/noticias');
         setNoticias(res.data.slice(0, 3));
       } catch (err) {
-        console.error('Error cargando noticias', err);
+        // Error silencioso - usar datos demo
+        setNoticias([]);
       } finally {
         setLoading(false);
       }

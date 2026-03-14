@@ -20,7 +20,8 @@ export default function AdminLayout({
   const isLoginPage = pathname === '/admin';
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    // Buscar token con namespace 'admin_' para evitar conflictos
+    const token = localStorage.getItem('admin_token');
     
     if (!token && !isLoginPage) {
       router.push('/admin');

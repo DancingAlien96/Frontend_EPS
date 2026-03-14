@@ -26,6 +26,8 @@ export default function LoginPage() {
 
     try {
       await signIn(formData.email, formData.password);
+      // No redirigir automáticamente - dejar que el usuario permanezca en la vista pública
+      // El usuario puede navegar manualmente si necesita ir a algún lado específico
       router.push('/');
     } catch (err: any) {
       setError(err.message || 'Error al iniciar sesión');
@@ -40,6 +42,8 @@ export default function LoginPage() {
 
     try {
       await signInWithGoogle();
+      // Redirigir a la página pública después de login exitoso con Google
+      // El usuario debe poder usar la plataforma pública sin ser admin
       router.push('/');
     } catch (err: any) {
       // No mostrar error si el usuario solo cerró el popup

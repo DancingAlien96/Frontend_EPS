@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import HeroCarousel from '@/components/public/HeroCarousel';
-import RegistroModal from '@/components/public/RegistroModal';
+import RegistrationWizard from '@/components/registro/RegistrationWizard';
 import NoticiasPreview from '@/components/public/NoticiasPreview';
 import EventosPreview from '@/components/public/EventosPreview';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -12,6 +12,16 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeView, setActiveView] = useState('inicio');
   const router = useRouter();
+
+  const handleOpenModal = () => {
+    console.log('📝 Home: Abriendo modal de registro');
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    console.log('❌ Home: Cerrando modal de registro');
+    setIsModalOpen(false);
+  };
 
   const handleViewChange = (view: string) => {
     if (view === 'noticias') {
@@ -40,7 +50,7 @@ export default function Home() {
           >
             {/* Hero Section */}
             <section>
-              <HeroCarousel onOpenModal={() => setIsModalOpen(true)} />
+              <HeroCarousel onOpenModal={handleOpenModal} />
             </section>
 
             {/* ¿Por qué elegirnos? */}
@@ -535,8 +545,8 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* Modal de Registro */}
-      <RegistroModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      {/* Wizard de Registro Progresivo */}
+      <RegistrationWizard isOpen={isModalOpen} onClose={handleCloseModal} />
     </div>
   );
 }

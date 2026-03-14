@@ -4,11 +4,12 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const slides = [
-  { id: 1, image: '/hero1.jpg', alt: 'Emprendedores 1' },
-  { id: 2, image: '/hero2.jpg', alt: 'Emprendedores 2' },
-  { id: 3, image: '/hero3.jpg', alt: 'Emprendedores 3' },
-  { id: 4, image: '/hero4.jpg', alt: 'Emprendedores 4' },
-  { id: 5, image: '/hero5.jpg', alt: 'Emprendedores 5' },
+  { id: 1, image: '/mineco1.jpg', alt: 'Emprendedores MINECO 1' },
+  { id: 2, image: '/mineco2.jpg', alt: 'Emprendedores MINECO 2' },
+  { id: 3, image: '/mineco3.jpg', alt: 'Emprendedores MINECO 3' },
+  { id: 4, image: '/mineco4.jpg', alt: 'Emprendedores MINECO 4' },
+  { id: 5, image: '/mineco5.jpg', alt: 'Emprendedores MINECO 5' },
+  { id: 6, image: '/mineco6.jpg', alt: 'Emprendedores MINECO 6' },
 ];
 
 interface HeroCarouselProps {
@@ -73,19 +74,47 @@ export default function HeroCarousel({ onOpenModal }: HeroCarouselProps) {
           transition={{ delay: 0.2 }}
           className="text-2xl sm:text-3xl md:text-5xl font-serif font-bold text-white mb-4 md:mb-6 drop-shadow-2xl"
         >
-          ¡Impulsa tu Emprendimiento!
+          ¡Únete al Ecosistema Emprendedor!
         </motion.h1>
 
-        <motion.p
+        <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 }}
-          className="text-sm sm:text-base md:text-xl text-white bg-[#003d7a]/95 sm:bg-[#003d7a]/90 px-4 sm:px-10 py-3 sm:py-6 rounded-3xl max-w-3xl mx-auto mb-4 sm:mb-6 drop-shadow-lg leading-relaxed shadow-elegant-xl"
+          className="bg-[#003d7a]/95 sm:bg-[#003d7a]/90 px-4 sm:px-10 py-4 sm:py-6 rounded-3xl max-w-4xl mx-auto mb-4 sm:mb-6 drop-shadow-lg shadow-elegant-xl"
         >
-          Sistema de apoyo dedicado al desarrollo empresarial en los 11 municipios
-          de Chiquimula. Te ofrecemos capacitación, financiamiento y asesoría
-          personalizada para hacer crecer tu negocio.
-        </motion.p>
+          <p className="text-sm sm:text-base md:text-lg text-white mb-4 leading-relaxed">
+            Sistema de apoyo dedicado al desarrollo empresarial en los 11 municipios
+            de Chiquimula. Registra tu perfil y accede a beneficios exclusivos:
+          </p>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left text-white text-xs sm:text-sm">
+            <div className="flex items-start gap-2">
+              <span className="text-purple-300 font-bold">💡</span>
+              <div>
+                <span className="font-bold">Emprendimiento:</span> Ideas o negocios en desarrollo
+              </div>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="text-blue-300 font-bold">🏢</span>
+              <div>
+                <span className="font-bold">Empresa (MIPYME):</span> Negocios formalizados
+              </div>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="text-orange-300 font-bold">🤝</span>
+              <div>
+                <span className="font-bold">Organización:</span> ONGs y fundaciones de apoyo
+              </div>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="text-green-300 font-bold">🏛️</span>
+              <div>
+                <span className="font-bold">Institución Pública:</span> Entidades gubernamentales
+              </div>
+            </div>
+          </div>
+        </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 12 }}
@@ -94,10 +123,13 @@ export default function HeroCarousel({ onOpenModal }: HeroCarouselProps) {
           className="flex justify-center"
         >
           <button
-            onClick={onOpenModal}
+            onClick={() => {
+              console.log('🚀 Botón de registro clickeado');
+              onOpenModal();
+            }}
             className="w-full sm:w-auto px-8 py-3 bg-[#28a745] text-white rounded-2xl font-semibold text-base sm:text-lg hover:bg-[#218838] transform hover:-translate-y-0.5 transition-all shadow-elegant-lg hover:shadow-elegant-xl"
           >
-            ✨ Registrarme como Emprendedor
+            ✨ Registrar mi Perfil
           </button>
         </motion.div>
       </div>

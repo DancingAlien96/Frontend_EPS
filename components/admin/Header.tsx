@@ -13,7 +13,8 @@ export default function Header({ onToggleSidebar, isDesktop }: HeaderProps) {
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    const userData = localStorage.getItem('user');
+    // Buscar datos con namespace 'admin_'
+    const userData = localStorage.getItem('admin_user');
     if (userData) {
       setUser(JSON.parse(userData));
     }
@@ -21,6 +22,9 @@ export default function Header({ onToggleSidebar, isDesktop }: HeaderProps) {
 
 
   const handleLogout = () => {
+    // Limpiar tokens de admin y tokens públicos (por si acaso)
+    localStorage.removeItem('admin_token');
+    localStorage.removeItem('admin_user');
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     window.location.href = '/admin';
